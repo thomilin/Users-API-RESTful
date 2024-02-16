@@ -10,11 +10,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
+//No me funciona AllArgsConstructor (No se por que D:)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter @Column
-    private long id;
+    private Long id;
     @Getter @Setter @Column
     private String name;
     @Getter @Setter @Column
@@ -23,6 +24,5 @@ public class User {
     private String password;
     @Getter @Setter @Column
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-
     private List<Phone> phones;
 }

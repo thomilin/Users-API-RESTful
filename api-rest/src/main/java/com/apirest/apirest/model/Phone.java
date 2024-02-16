@@ -12,7 +12,7 @@ public class Phone {
     @Id     //Convierte este atributo en un Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)     //Hace que sea auto incrementable
     @Getter @Setter @Column
-    private long id;
+    private Long id;
     @Getter @Setter @Column
     private String number;
     @Getter @Setter @Column
@@ -22,5 +22,5 @@ public class Phone {
     @Getter @Setter @Column
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user.id")
-    private User user;
+    private User user;        // Llave Foranea user de la tabla User
 }
