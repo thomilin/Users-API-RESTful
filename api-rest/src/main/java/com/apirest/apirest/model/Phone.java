@@ -19,7 +19,7 @@ public class Phone {
     private String cityCode;
     @Getter @Setter @Column
     private String countryCode;
-    @Getter @Setter @Column
+    @Getter @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user.id")
     private User user;        // Llave Foranea user de la tabla User

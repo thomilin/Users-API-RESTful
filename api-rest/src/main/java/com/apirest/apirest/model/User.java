@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
 //No me funciona AllArgsConstructor (No se por que D:)
+//Ni @RequiredArgsContructor :C
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -4,12 +4,15 @@ import com.apirest.apirest.model.User;
 import com.apirest.apirest.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class UserService {
-    @Autowired
+    @Autowired //Revisar por que tira error
     private UserRepository userRepository;
 
     public User createUser(User user){
