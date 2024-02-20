@@ -1,6 +1,7 @@
 package com.apirest.apirest.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -23,25 +24,33 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
+
     @NotBlank(message = "El nombre es obligatorio")
     @Column
     private String name;
+
     @NotBlank(message = "El correo es obligatorio")
     @Email(message = "Email inválido")
     @Column
     private String email;
+
     @NotBlank(message = "La contraseña es obligatoria")
     @Column
     private String password;
+
     @Column
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Phone> phone;
+
     @Column
     private LocalDateTime created;
+
     @Column
     private LocalDateTime modified;
+
     @Column
     private LocalDateTime lastLogin;
+
     @Column
     private boolean active;
 }

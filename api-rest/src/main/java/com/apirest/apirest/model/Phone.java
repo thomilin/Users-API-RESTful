@@ -8,18 +8,22 @@ import org.springframework.context.annotation.Lazy;
 
 @Entity
 @Table(name = "phones")
+@Getter @Setter
 public class Phone {
     @Id     //Convierte este atributo en un Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)     //Hace que sea auto incrementable
-    @Getter @Setter @Column
+    @Column
     private Long id;
-    @Getter @Setter @Column
+
+    @Column
     private String number;
-    @Getter @Setter @Column
+
+    @Column
     private String cityCode;
-    @Getter @Setter @Column
+
+    @Column
     private String countryCode;
-    @Getter @Setter
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;        // Llave Foranea user de la tabla Userss
