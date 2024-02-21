@@ -1,12 +1,9 @@
 package com.apirest.apirest.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,15 +39,30 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Phone> phone;
 
-    @Column
-    private LocalDateTime created;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(updatable = false)
+    private Date created;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column
-    private LocalDateTime modified;
+    private Date modified;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column
-    private LocalDateTime lastLogin;
+    private Date lastLogin;
 
     @Column
     private boolean active;
+
+    @PrePersist
+    protected void onCreate(){
+        created = new Date();
+        modified = new Date();
+        lastLogin = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate(){
+        modified = new Date();
+    }
 }

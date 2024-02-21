@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,19 +22,29 @@ public class UserController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@Valid @RequestBody User user) { return userService.createUser(user); }
+    public User createUser(@Valid @RequestBody User user) {
+        return userService.createUser(user); }
 
     @GetMapping("/list")
     public List<User> getAllUsers(){
+
         return userService.getAllUsers();
     }
 
     @GetMapping("{id}")
     public User searchUserById(@PathVariable("id") Long id){
+
         return userService.getUserById(id);
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUserById(@PathVariable("id") Long id) { userService.deleteUser(id); }
+    public void deleteUserById(@PathVariable("id") Long id) {
+        userService.deleteUser(id); }
+
+    @PutMapping("{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
+        User user = userService.updateUser(userId, updatedUser);
+        return ResponseEntity.ok().body(user);
+    }
 }

@@ -8,8 +8,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
+import java.util.Date;
 
 @Component
 public class UserService {
@@ -22,7 +24,8 @@ public class UserService {
             throw new IllegalArgumentException("El correo ya está registrado");
         }
 
-        LocalDateTime now = LocalDateTime.now();
+
+        Date now = new Date();
         user.setCreated(now);
         user.setModified(now);
         user.setLastLogin(now);
@@ -42,5 +45,16 @@ public class UserService {
 
     public void deleteUser(Long id){
         userRepository.deleteById(id);
+    }
+
+    public User updateUser(Long id, User updatedUser) {
+
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+
+        existingUser.setName(updatedUser.getName());
+        existingUser.setEmail(updatedUser.getEmail());
+
+        return userRepository.save(existingUser);
     }
 }
