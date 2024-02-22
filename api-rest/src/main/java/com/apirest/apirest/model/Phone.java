@@ -4,16 +4,23 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.context.annotation.Lazy;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "phones")
 @Getter @Setter
 public class Phone {
-    @Id     //Convierte este atributo en un Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)     //Hace que sea auto incrementable
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column
-    private Long id;
+    private UUID id;
 
     @Column
     private String number;
@@ -25,6 +32,6 @@ public class Phone {
     private String countryCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private User user;        // Llave Foranea user de la tabla Userss
 }

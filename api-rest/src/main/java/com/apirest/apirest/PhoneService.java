@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Component
 public class PhoneService {
 
@@ -16,7 +18,7 @@ public class PhoneService {
         return phoneRepository.save(phone);
     }
 
-    public Phone updatePhone(Long id, Phone updatedPhone) {
+    public Phone updatePhone(UUID id, Phone updatedPhone) {
         Phone phone = phoneRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Teléfono no encontrado"));
 
         phone.setNumber(updatedPhone.getNumber());
@@ -26,7 +28,7 @@ public class PhoneService {
         return phoneRepository.save(phone);
     }
 
-    public void deletePhone(Long id) {
+    public void deletePhone(UUID id) {
         Phone phone = phoneRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Teléfono no encontrado"));
 
         phoneRepository.delete(phone);

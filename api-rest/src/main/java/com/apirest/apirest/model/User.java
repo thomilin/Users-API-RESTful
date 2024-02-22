@@ -1,15 +1,19 @@
 package com.apirest.apirest.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -18,9 +22,13 @@ import java.util.List;
 //Ni @RequiredArgsContructor :C
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column
-    private Long id;
+    private UUID id;
 
     @NotBlank(message = "El nombre es obligatorio")
     @Column
@@ -28,10 +36,13 @@ public class User {
 
     @NotBlank(message = "El correo es obligatorio")
     @Email(message = "Email inválido")
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Formato Invalido ")
     @Column
     private String email;
 
-    @NotBlank(message = "La contraseña es obligatoria")
+    //@NotBlank(message = "Formato de contraseña inválido (az AZ 0-9 !@#$%^&*()_+=;:,. {8,16})")
+    @JsonIgnore
+    @Pattern(regexp = "^[a-zA-Z0-9!@#$%^&*()_+=;:,.]{8,16}$", message = "Formato de contraseña inválido (az AZ 0-9 !@#$%^&*()_+=;:,. {8,16})")
     @Column
     private String password;
 

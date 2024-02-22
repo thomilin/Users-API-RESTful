@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,18 +33,18 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    public User searchUserById(@PathVariable("id") Long id){
+    public User searchUserById(@PathVariable("id") UUID id){
 
         return userService.getUserById(id);
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUserById(@PathVariable("id") Long id) {
+    public void deleteUserById(@PathVariable("id") UUID id) {
         userService.deleteUser(id); }
 
     @PutMapping("{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+    public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody User updatedUser) {
         User user = userService.updateUser(id, updatedUser);
         return ResponseEntity.ok().body(user);
     }
