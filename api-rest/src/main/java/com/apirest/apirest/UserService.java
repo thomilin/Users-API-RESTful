@@ -2,15 +2,13 @@ package com.apirest.apirest;
 
 import com.apirest.apirest.model.User;
 import com.apirest.apirest.repository.UserRepository;
-import com.apirest.apirest.util.ValidacionUtil;
+import com.apirest.apirest.util.UtilValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.util.*;
-
-//validaciones aqui
 
 @Component
 public class UserService {
@@ -19,10 +17,7 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private MessageSource messageSource;
-
-    @Autowired
-    private ValidacionUtil validacionutil;
+    private UtilValidation utilValidation;
 
     public User createUser(User user){
         if (userRepository.existsByEmail(user.getEmail())) {
@@ -35,11 +30,11 @@ public class UserService {
         user.setLastLogin(now);
         user.setActive(true);
 
-        if ( !validacionutil.emailValido(user.getEmail())) {
+        if ( !utilValidation.emailValido(user.getEmail())) {
             throw new IllegalArgumentException("El email es invalido");
         }
 
-        if ( !validacionutil.claveValida(user.getPassword())) {
+        if ( !utilValidation.claveValida(user.getPassword())) {
             throw new IllegalArgumentException("La clave es invalida");
         }
 
@@ -100,11 +95,4 @@ public class UserService {
 
         return userRepository.save(existingUser);
     }
-
-
-
-    public String getMessage(String code) {
-        return messageSource.getMessage(code, null, Locale.getDefault());
-    }
-
 }

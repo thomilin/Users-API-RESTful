@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidacionUtil {
+public class UtilValidation {
 
     @Value("${validation.password.regex}")
     private String passwordRegex;
@@ -20,4 +20,5 @@ public class ValidacionUtil {
         System.out.println(password.matches(emailRegex));
         return password.matches(emailRegex);
     }
+
 }
