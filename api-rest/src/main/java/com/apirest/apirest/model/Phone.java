@@ -2,6 +2,7 @@ package com.apirest.apirest.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "phones")
-@Getter @Setter
+@Data
 public class Phone {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -31,7 +32,5 @@ public class Phone {
     @Column
     private String countryCode;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
-    private User user;        // Llave Foranea user de la tabla Userss
+          // Llave Foranea user de la tabla Userss
 }

@@ -48,4 +48,10 @@ public class UserController {
         User user = userService.updateUser(id, updatedUser);
         return ResponseEntity.ok().body(user);
     }
+
+    @PatchMapping("{id}")
+    public ResponseEntity<User> patchUser(@PathVariable UUID id, @RequestBody User updatedUser) {
+        User user = userService.patchUser(id, updatedUser);
+        return ResponseEntity.ok().body(user);
+    }
 }
