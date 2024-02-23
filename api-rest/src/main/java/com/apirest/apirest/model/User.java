@@ -1,11 +1,11 @@
 package com.apirest.apirest.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,9 +18,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-@Data //@getter @setter
-//No me funciona AllArgsConstructor (No se por que D:)
-//Ni @RequiredArgsContructor :C
+@Data // para los @getter @setter
 public class User {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -33,25 +31,22 @@ public class User {
 
     @NotBlank(message = "El nombre es obligatorio")
     @Column
+    @Size(max = 35, message = "El nombre no puede tener mas de 35 caracteres")
     private String name;
 
-    @NotBlank(message = "El correo es obligatorio")   //APRENDER A USAR TRY CATCH EN USERSERVICE EN VEZ DE ESTO
-    @Email(message = "Email inválido")
-    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Formato Invalido ")
+    //@NotBlank(message = "El correo es obligatorio")   //APRENDER A USAR TRY CATCH EN USERSERVICE EN VEZ DE ESTO
+    //@Email(message = "Email inválido")
     @Column(unique = true)
     private String email;
 
     //@NotBlank(message = "Formato de contraseña inválido (az AZ 0-9 !@#$%^&*()_+=;:,. {8,16})")
-    @Pattern(regexp = "^[a-zA-Z0-9!@#$%^&*()_+=;:,.]{8,16}$", message = "Formato de contraseña inválido (az AZ 0-9 !@#$%^&*()_+=;:,. {8,16})")
     @Column
     private String password;
-
 
     @Column
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Phone> phone;
-
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(updatable = false)

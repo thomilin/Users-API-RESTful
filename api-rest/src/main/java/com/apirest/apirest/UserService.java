@@ -2,27 +2,29 @@ package com.apirest.apirest;
 
 import com.apirest.apirest.model.User;
 import com.apirest.apirest.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import com.apirest.apirest.util.ValidacionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.List;
-import java.util.Optional;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
+
+//validaciones aqui
 
 @Component
 public class UserService {
-    @Autowired //Revisar por que tira error  ---> Solucionado
+
+    @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private MessageSource messageSource;
+
+    @Autowired
+    private ValidacionUtil validacionutil;
+
     public User createUser(User user){
-        // Verifica si el correo esta dentroo
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("El correo ya está registrado");
         }
@@ -32,6 +34,14 @@ public class UserService {
         user.setModified(now);
         user.setLastLogin(now);
         user.setActive(true);
+
+        if ( !validacionutil.emailValido(user.getEmail())) {
+            throw new IllegalArgumentException("El email es invalido");
+        }
+
+        if ( !validacionutil.claveValida(user.getPassword())) {
+            throw new IllegalArgumentException("La clave es invalida");
+        }
 
         return userRepository.save(user);
     }
@@ -50,19 +60,6 @@ public class UserService {
 
         userRepository.deleteById(id);
     }
-
-    /* public User updateUser(UUID id, User updatedUser) {  // (User user) que reciba el usuario completo
-
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
-
-        existingUser.setName(updatedUser.getName());  //existinguser.usuariocompleto
-        existingUser.setEmail(updatedUser.getEmail());
-        existingUser.setActive(updatedUser.isActive());
-
-        return userRepository.save(existingUser);
-    } //Asi mismo esta funcionando como un PATCH, la idea es que se actualice completamente, que reciba todos los objetos del usuario
-    //Falta hacer un PATCH para cambiar contrasena    /   O dejarlo para cambiar Name y Email como tengo en POST */
 
     public User updateUser(UUID id, User updatedUser) {
         User existingUser = userRepository.findById(id)
@@ -83,6 +80,13 @@ public class UserService {
                 throw new IllegalArgumentException("Error al actualizar el usuario: " + e.getMessage());
             }
         }
+
+        Date now = new Date();
+        updatedUser.setCreated(now);
+        updatedUser.setModified(now);
+        updatedUser.setLastLogin(now);
+        updatedUser.setActive(true);
+
         return userRepository.save(existingUser);
     }
 
@@ -95,6 +99,12 @@ public class UserService {
         existingUser.setEmail(updatedUser.getEmail());
 
         return userRepository.save(existingUser);
+    }
+
+
+
+    public String getMessage(String code) {
+        return messageSource.getMessage(code, null, Locale.getDefault());
     }
 
 }

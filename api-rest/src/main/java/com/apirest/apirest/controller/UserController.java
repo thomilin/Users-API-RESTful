@@ -24,7 +24,8 @@ public class UserController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@Valid @RequestBody User user) {
-        return userService.createUser(user); }
+        return userService.createUser(user);
+    }
 
     @GetMapping("/list")
     public List<User> getAllUsers(){

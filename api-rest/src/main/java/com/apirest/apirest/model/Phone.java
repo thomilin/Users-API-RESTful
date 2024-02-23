@@ -31,6 +31,4 @@ public class Phone {
 
     @Column
     private String countryCode;
-
-          // Llave Foranea user de la tabla Userss
 }
