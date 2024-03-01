@@ -64,14 +64,14 @@ public class User {
     private boolean active;
 
     @PrePersist
-    protected void onCreate(){
+    public void onCreate(){
         created = new Date();
         modified = new Date();
         lastLogin = new Date();
     }
 
     @PreUpdate
-    protected void onUpdate(){
+    public void onUpdate(){
         modified = new Date();
     }
 }
